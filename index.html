@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors Pro</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    overflow:hidden;
+}
+
+.bg{
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:.25;
+}
+
+.bg1{
+    background:#3b82f6;
+    top:-150px;
+    left:-150px;
+}
+
+.bg2{
+    background:#8b5cf6;
+    bottom:-150px;
+    right:-150px;
+}
+
+.container{
+    width:min(95%,850px);
+    padding:30px;
+    border-radius:30px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    text-align:center;
+    color:white;
+}
+
+h1{
+    font-size:2.8rem;
+    margin-bottom:20px;
+    letter-spacing:2px;
+}
+
+.scoreboard{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    margin:25px 0;
+}
+
+.score{
+    background:rgba(255,255,255,.08);
+    padding:15px 25px;
+    border-radius:20px;
+    min-width:130px;
+}
+
+.score h2{
+    font-size:1rem;
+    opacity:.8;
+}
+
+.score p{
+    font-size:2rem;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.choices{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin:35px 0;
+}
+
+.choice{
+    width:120px;
+    height:120px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    font-size:3rem;
+    background:rgba(255,255,255,.1);
+    color:white;
+    transition:.3s;
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.choice:hover{
+    transform:translateY(-8px) scale(1.05);
+    background:rgba(255,255,255,.18);
+}
+
+.choice:active{
+    transform:scale(.95);
+}
+
+.battle{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+    margin:30px 0;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:180px;
+    height:180px;
+    border-radius:25px;
+    background:rgba(255,255,255,.08);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.card span:first-child{
+    font-size:4rem;
+}
+
+.label{
+    margin-top:10px;
+    opacity:.8;
+}
+
+.vs{
+    font-size:2rem;
+    font-weight:bold;
+}
+
+.result{
+    font-size:1.8rem;
+    margin-top:20px;
+    font-weight:bold;
+    min-height:50px;
+}
+
+.win{
+    color:#22c55e;
+}
+
+.lose{
+    color:#ef4444;
+}
+
+.draw{
+    color:#facc15;
+}
+
+.reset{
+    margin-top:20px;
+    padding:12px 25px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:bold;
+    background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+    color:white;
+    transition:.3s;
+}
+
+.reset:hover{
+    transform:scale(1.05);
+}
+
+.animate{
+    animation:shake .4s ease;
+}
+
+@keyframes shake{
+    0%,100%{transform:rotate(0)}
+    25%{transform:rotate(-10deg)}
+    50%{transform:rotate(10deg)}
+    75%{transform:rotate(-10deg)}
+}
+
+@media(max-width:650px){
+    h1{
+        font-size:2rem;
+    }
+
+    .battle{
+        gap:15px;
+    }
+
+    .card{
+        width:140px;
+        height:140px;
+    }
+
+    .choice{
+        width:95px;
+        height:95px;
+        font-size:2.5rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="bg bg1"></div>
+<div class="bg bg2"></div>
+
+<div class="container">
+
+    <h1>✊ ✋ ✌️ Rock Paper Scissors</h1>
+
+    <div class="scoreboard">
+        <div class="score">
+            <h2>You</h2>
+            <p id="userScore">0</p>
+        </div>
+
+        <div class="score">
+            <h2>Computer</h2>
+            <p id="computerScore">0</p>
+        </div>
+    </div>
+
+    <div class="choices">
+        <button class="choice" onclick="play('rock')">✊</button>
+        <button class="choice" onclick="play('paper')">✋</button>
+        <button class="choice" onclick="play('scissors')">✌️</button>
+    </div>
+
+    <div class="battle">
+        <div class="card" id="playerCard">
+            <span id="playerChoice">❔</span>
+            <span class="label">Player</span>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="card" id="computerCard">
+            <span id="computerChoice">❔</span>
+            <span class="label">Computer</span>
+        </div>
+    </div>
+
+    <div class="result" id="result">
+        Choose your move!
+    </div>
+
+    <button class="reset" onclick="resetGame()">
+        Reset Game
+    </button>
+
+</div>
+
+<script>
+
+const emojis = {
+    rock:"✊",
+    paper:"✋",
+    scissors:"✌️"
+};
+
+let userScore = 0;
+let computerScore = 0;
+
+function play(userChoice){
+
+    const choices = ["rock","paper","scissors"];
+    const computerChoice =
+        choices[Math.floor(Math.random()*3)];
+
+    document.getElementById("playerChoice").textContent =
+        emojis[userChoice];
+
+    document.getElementById("computerChoice").textContent =
+        emojis[computerChoice];
+
+    animateCards();
+
+    let result = "";
+
+    if(userChoice === computerChoice){
+        result = "🤝 It's a Draw!";
+        showResult(result,"draw");
+    }
+    else if(
+        (userChoice==="rock" && computerChoice==="scissors") ||
+        (userChoice==="paper" && computerChoice==="rock") ||
+        (userChoice==="scissors" && computerChoice==="paper")
+    ){
+        userScore++;
+        document.getElementById("userScore").textContent =
+            userScore;
+
+        result = "🎉 You Win!";
+        showResult(result,"win");
+    }
+    else{
+        computerScore++;
+        document.getElementById("computerScore").textContent =
+            computerScore;
+
+        result = "💀 Computer Wins!";
+        showResult(result,"lose");
+    }
+}
+
+function showResult(text,className){
+    const result = document.getElementById("result");
+    result.textContent = text;
+    result.className = "result " + className;
+}
+
+function animateCards(){
+
+    const p = document.getElementById("playerCard");
+    const c = document.getElementById("computerCard");
+
+    p.classList.remove("animate");
+    c.classList.remove("animate");
+
+    void p.offsetWidth;
+
+    p.classList.add("animate");
+    c.classList.add("animate");
+}
+
+function resetGame(){
+
+    userScore = 0;
+    computerScore = 0;
+
+    document.getElementById("userScore").textContent = 0;
+    document.getElementById("computerScore").textContent = 0;
+
+    document.getElementById("playerChoice").textContent = "❔";
+    document.getElementById("computerChoice").textContent = "❔";
+
+    const result = document.getElementById("result");
+    result.textContent = "Choose your move!";
+    result.className = "result";
+}
+
+</script>
+
+</body>
+</html>
