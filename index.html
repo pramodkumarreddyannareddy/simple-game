@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Arcade</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="menu" class="screen">
+    <h1>🎮 Game Arcade</h1>
+
+    <div class="cards">
+        <div class="card" onclick="showReactionGame()">
+            <h2>⚡ Reaction Master</h2>
+            <p>Test your reaction speed.</p>
+        </div>
+
+        <div class="card" onclick="showSnakeGame()">
+            <h2>🐍 Snake Arena</h2>
+            <p>Eat fruits and grow.</p>
+        </div>
+    </div>
+</div>
+
+<div id="reactionScreen" class="screen hidden">
+    <button class="backBtn" onclick="goHome()">⬅ Back</button>
+
+    <h2>⚡ Reaction Master</h2>
+
+    <div id="reactionBox">
+        Click Start
+    </div>
+
+    <button id="reactionBtn">Start</button>
+
+    <h3 id="reactionResult"></h3>
+    <h4 id="bestReaction"></h4>
+</div>
+
+<div id="snakeScreen" class="screen hidden">
+    <button class="backBtn" onclick="goHome()">⬅ Back</button>
+
+    <h2>🐍 Snake Arena</h2>
+
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+
+    <div class="scoreBox">
+        Score: <span id="score">0</span>
+        |
+        Best: <span id="highScore">0</span>
+    </div>
+
+    <button onclick="startSnake()">Restart</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
